@@ -134,7 +134,7 @@ public class InventoryManager : MonoBehaviour
         mItemDetailName = itemDetails.Q<Label>("ItemDetailName");
         mItemDetailDescription = itemDetails.Q<Label>("ItemDetailDescription");
         mItemDetailCost = itemDetails.Q<Label>("ItemDetailCost");
-        
+
         /*
          * Task 2c: Link the Button
          *
@@ -153,10 +153,12 @@ public class InventoryManager : MonoBehaviour
          * this is that whenever we press the button, CreateItem() will
          * be called.
          */
-        
-        
-        
-        
+        mItemCreateButton = itemDetails.Q<Button>("ItemDetailButtonCreate");
+        mItemCreateButton.clicked += () => CreateItem();
+
+
+
+
         await UniTask.WaitForEndOfFrame();
 
         var gridSlots = mInventoryGrid.Children();
@@ -356,9 +358,17 @@ public class InventoryManager : MonoBehaviour
         
         if (item == null)
         { // We have no item selected -> Provide some default information.
+            mItemCreateButton.SetEnabled(false);
+            mItemDetailName.text = "Select item";
+            mItemDetailDescription.text = "Select item";
+            mItemDetailCost.text = "-";
         }
         else
         { // We have item selected -> Use the item information.
+            mItemDetailName.text = item.definition.name;
+            mItemDetailDescription.text = item.definition.readableDescription;
+            mItemDetailCost.text = item.definition.cost.ToString();
+            mItemCreateButton.SetEnabled(availableCurrency >= item.definition.cost);
         }
         
         selectedItem = item;
@@ -393,7 +403,14 @@ public class InventoryManager : MonoBehaviour
          */
         
         var itemDefinition = selectedItem?.definition;
+        if (!itemDefinition) return false;
+        if (itemDefinition.cost > availableCurrency) return false;
+        availableCurrency -= itemDefinition.cost;
+
+        GameObject obj = Instantiate(itemDefinition.prefab, createDestination.transform);
         
-        return false;
+
+
+        return obj != null;
     }
 }
