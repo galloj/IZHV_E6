@@ -623,6 +623,7 @@ MonoBehaviour:
   - definition: {fileID: 11400000, guid: e390f8498e11c12428c535305ce1ef63, type: 2}
   - definition: {fileID: 11400000, guid: a8f10d9350e1ac54a85650d7911b64ba, type: 2}
   - definition: {fileID: 11400000, guid: c40c76109cac301419a35d2f2df72493, type: 2}
+  - definition: {fileID: 11400000, guid: 0f1b0d9cfbbb9734dbf0c309666e4980, type: 2}
   inventoryDimension: {x: 0, y: 0}
 --- !u!114 &291797075
 MonoBehaviour:

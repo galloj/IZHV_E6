@@ -95,7 +95,7 @@ public class DebugMenuUI : MonoBehaviour
             // BeginVertical starts a vertical group, while BeginHorizontal a horizontal one.
             GUILayout.BeginVertical();
             {
-                
+
                 /*
                  * Task 3b: The Cheat
                  *
@@ -137,11 +137,21 @@ public class DebugMenuUI : MonoBehaviour
                     if (GUI.changed)
                     { InventoryManager.Instance.availableCurrency = currency; }
                  */
-                
-                
-                
-                
-                
+                GUILayout.BeginHorizontal();
+                {
+                    GUILayout.Label("Currency: ", GUILayout.Width(WINDOW_DIMENSION.x / 4.0f));
+                    var currency = InventoryManager.Instance.availableCurrency;
+                    currency = (int)GUILayout.HorizontalSlider(currency, 0.0f, 1000.0f,
+                        GUILayout.ExpandWidth(true));
+                    if (GUI.changed)
+                    { InventoryManager.Instance.availableCurrency = currency; }
+                }
+                GUILayout.EndHorizontal();
+
+
+
+
+
                 /*
                  * Task 3c: The Tool
                  *
@@ -164,11 +174,32 @@ public class DebugMenuUI : MonoBehaviour
                  * This task can be considered as completed once all three handles can
                  * be controlled from the Cheat Console.
                  */
-                
-                
-                
-                
-                
+                GUILayout.BeginHorizontal();
+                {
+                    var interactiveMode = GameManager.Instance.interactiveMode;
+                    interactiveMode = GUILayout.Toggle(interactiveMode, "Interactive mode", new GUILayoutOption[] { });
+                    if (GUI.changed)
+                    { GameManager.Instance.interactiveMode = interactiveMode; }
+                }
+                GUILayout.EndHorizontal();
+
+                GUILayout.BeginHorizontal();
+                {
+                    GUILayout.Label("Volume: ", GUILayout.Width(WINDOW_DIMENSION.x / 4.0f));
+                    var volume = SoundManager.Instance.masterVolume;
+                    volume = (int)GUILayout.HorizontalSlider(volume, -60.0f, 0.0f,
+                        GUILayout.ExpandWidth(true));
+                    if (GUI.changed)
+                    { SoundManager.Instance.masterVolume = volume; }
+
+                    var masterMuted = SoundManager.Instance.masterMuted;
+                    masterMuted = GUILayout.Toggle(masterMuted, "Mute", new GUILayoutOption[] { });
+                    if (GUI.changed)
+                    { SoundManager.Instance.masterMuted = masterMuted; }
+                }
+                GUILayout.EndHorizontal();
+
+
                 // Placing the elements next to each other.
                 GUILayout.BeginHorizontal();
                 {
@@ -196,7 +227,9 @@ public class DebugMenuUI : MonoBehaviour
                     if (GUILayout.Button("Enable\nDummy\nCharacter", 
                         GUILayout.ExpandWidth(true), 
                         GUILayout.ExpandHeight(true)))
-                    { /* Fill the code here! */ }
+                    {
+                        GameManager.Instance.TogglePlayerCharacter();
+                    }
                 }
                 GUILayout.EndHorizontal();
                 // Do not forget to end each group in the correct order!
